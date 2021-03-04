@@ -1,0 +1,138 @@
+tony@wam-desktop:~/projects/tinymembench$ sudo ./tinymembench
+Using FIFO scheduler
+tinymembench-pthread v0.7.0 (simple benchmark for memory throughput and latency)
+Single thread test
+1 thread(s) on 6 CPU
+
+==========================================================================
+==                     Test: DRAM                                               ==
+== Memory bandwidth tests                                               ==
+== size Bytes: 1073741824                                                ==
+== blocksize Bytes: 2048                                                ==
+==                                                                      ==
+== Note 1: 1MB = 1000000 bytes                                          ==
+== Note 2: Results for 'copy' tests show how many bytes can be          ==
+==         copied per second (adding together read and written          ==
+==         bytes would have provided twice higher numbers)              ==
+== Note 3: 2-pass copy means that we are using a small temporary buffer ==
+==         to first fetch data into it, and only then write it to the   ==
+==         destination (source -> L1 cache, L1 cache -> destination)    ==
+== Note 4: If sample standard deviation exceeds 0.1%, it is shown in    ==
+==         brackets                                                     ==
+==========================================================================
+
+ C copy backwards                                     :   9322.8 MB/s (1.4%)
+ C copy backwards (32 byte blocks)                    :   9329.0 MB/s (0.9%)
+ C copy backwards (64 byte blocks)                    :   9435.0 MB/s (1.1%)
+ C copy                                               :   9151.2 MB/s (0.8%)
+ C copy prefetched (32 bytes step)                    :   9753.2 MB/s (1.0%)
+ C copy prefetched (64 bytes step)                    :   9681.9 MB/s (1.0%)
+ C 2-pass copy                                        :   7259.7 MB/s (0.4%)
+ C 2-pass copy prefetched (32 bytes step)             :   8037.3 MB/s (0.9%)
+ C 2-pass copy prefetched (64 bytes step)             :   7984.3 MB/s (1.2%)
+ C fetch                                              :  15015.7 MB/s (2.0%)
+ C fill                                               :  12706.1 MB/s (1.2%)
+ C fill (shuffle within 16 byte blocks)               :  12683.5 MB/s (0.8%)
+ C fill (shuffle within 32 byte blocks)               :  12692.0 MB/s (0.9%)
+ C fill (shuffle within 64 byte blocks)               :  12704.7 MB/s (1.3%)
+ ---
+ standard memcpy                                      :  14290.6 MB/s (0.8%)
+ standard memset                                      :  14479.8 MB/s (0.8%)
+ ---
+ MOVSB copy                                           :   7387.3 MB/s (0.6%)
+ MOVSD copy                                           :   7390.1 MB/s (0.6%)
+ STOSB fill                                           :  12305.5 MB/s (0.8%)
+ SSE2 copy                                            :  10428.1 MB/s (0.7%)
+ SSE2 nontemporal copy                                :  15436.4 MB/s (1.0%)
+ SSE2 copy prefetched (32 bytes step)                 :  10167.4 MB/s (0.8%)
+ SSE2 copy prefetched (64 bytes step)                 :  10122.2 MB/s (0.7%)
+ SSE2 nontemporal copy prefetched (32 bytes step)     :  16269.9 MB/s (1.0%)
+ SSE2 nontemporal copy prefetched (64 bytes step)     :  16340.4 MB/s (0.8%)
+ SSE2 2-pass copy                                     :   8743.3 MB/s (1.0%)
+ SSE2 2-pass copy prefetched (32 bytes step)          :   8834.5 MB/s (1.1%)
+ SSE2 2-pass copy prefetched (64 bytes step)          :   8904.2 MB/s (1.0%)
+ SSE2 2-pass nontemporal copy                         :   4074.5 MB/s (1.0%)
+ SSE2 fill                                            :  15103.2 MB/s (1.4%)
+ SSE2 nontemporal fill                                :  20246.4 MB/s (1.2%)
+ ---
+ AVX2 copy                                            :   9185.6 MB/s (0.6%)
+ AVX2 nontemporal copy                                :  16336.8 MB/s (0.7%)
+ AVX2 copy prefetched (32 bytes step)                 :   9189.1 MB/s (0.9%)
+ AVX2 copy prefetched (64 bytes step)                 :   9148.3 MB/s (0.6%)
+ AVX2 nontemporal copy prefetched (32 bytes step)     :  16199.9 MB/s (0.8%)
+ AVX2 nontemporal copy prefetched (64 bytes step)     :  16189.1 MB/s (1.1%)
+ AVX2 2-pass copy                                     :   9134.2 MB/s (0.7%)
+ AVX2 2-pass copy prefetched (32 bytes step)          :   8762.7 MB/s (0.5%)
+ AVX2 2-pass copy prefetched (64 bytes step)          :   8799.4 MB/s (0.8%)
+ AVX2 2-pass nontemporal copy                         :   4324.9 MB/s (3.9%)
+ AVX2 fill                                            :  14583.6 MB/s (0.7%)
+ AVX2 nontemporal fill                                :  20410.3 MB/s (0.7%)
+
+==========================================================================
+== Memory latency test                                                  ==
+== latbench_size Bytes: 2147483648                                       ==
+== latbench_count: 10000000                                             ==
+==                                                                      ==
+== Average time is measured for random memory accesses in the buffers   ==
+== of different sizes. The larger is the buffer, the more significant   ==
+== are relative contributions of TLB, L1/L2 cache misses and SDRAM      ==
+== accesses. For extremely large buffer sizes we are expecting to see   ==
+== page table walk with several requests to SDRAM for almost every      ==
+== memory access (though 64MiB is not nearly large enough to experience ==
+== this effect to its fullest).                                         ==
+==                                                                      ==
+== Note 1: All the numbers are representing extra time, which needs to  ==
+==         be added to L1 cache latency. The cycle timings for L1 cache ==
+==         latency can be usually found in the processor documentation. ==
+== Note 2: Dual random read means that we are simultaneously performing ==
+==         two independent memory accesses at a time. In the case if    ==
+==         the memory subsystem can't handle multiple outstanding       ==
+==         requests, dual random read has the same timings as two       ==
+==         single reads performed one after another.                    ==
+==========================================================================
+
+block size : single random read / dual random read, [MADV_NOHUGEPAGE]
+      1024 :    0.0 ns          /     7.9 ns
+      2048 :    0.0 ns          /     7.9 ns
+      4096 :    0.0 ns          /     7.9 ns
+      8192 :    0.0 ns          /     7.9 ns
+     16384 :    0.0 ns          /     7.9 ns
+     32768 :    0.0 ns          /     7.9 ns
+     65536 :    1.0 ns          /     9.3 ns
+    131072 :    1.5 ns          /     9.7 ns
+    262144 :    1.8 ns          /     9.9 ns
+    524288 :    3.5 ns          /    12.0 ns
+   1048576 :    6.9 ns          /    16.6 ns
+   2097152 :    9.0 ns          /    18.1 ns
+   4194304 :   10.0 ns          /    18.6 ns
+   8388608 :   11.9 ns          /    19.9 ns
+  16777216 :   53.5 ns          /    78.9 ns
+  33554432 :   82.7 ns          /   122.8 ns
+  67108864 :  107.9 ns          /   144.9 ns
+ 134217728 :  126.6 ns          /   157.5 ns
+ 268435456 :  132.5 ns          /   162.6 ns
+ 536870912 :  137.4 ns          /   166.7 ns
+1073741824 :  143.7 ns          /   171.5 ns
+
+block size : single random read / dual random read, [MADV_HUGEPAGE]
+      1024 :    0.0 ns          /     7.9 ns
+      2048 :    0.0 ns          /     7.8 ns
+      4096 :    0.0 ns          /     7.8 ns
+      8192 :    0.0 ns          /     7.9 ns
+     16384 :    0.0 ns          /     7.9 ns
+     32768 :    0.0 ns          /     7.9 ns
+     65536 :    1.0 ns          /     9.3 ns
+    131072 :    1.5 ns          /     9.7 ns
+    262144 :    1.8 ns          /     9.9 ns
+    524288 :    2.5 ns          /    10.6 ns
+   1048576 :    5.6 ns          /    15.1 ns
+   2097152 :    7.2 ns          /    16.3 ns
+   4194304 :    8.2 ns          /    16.8 ns
+   8388608 :    9.3 ns          /    17.3 ns
+  16777216 :   40.3 ns          /    62.8 ns
+  33554432 :   83.1 ns          /   118.1 ns
+  67108864 :   99.6 ns          /   130.8 ns
+ 134217728 :  109.2 ns          /   136.6 ns
+ 268435456 :  114.2 ns          /   139.7 ns
+ 536870912 :  116.9 ns          /   141.5 ns
+1073741824 :  118.1 ns          /   141.9 ns
